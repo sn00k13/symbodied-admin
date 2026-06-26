@@ -1,0 +1,268 @@
+"use client";
+
+import { useEffect, useState } from "react";
+import { Plus, X, Pencil, Trash2, CheckCircle, RotateCcw } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Card } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { StatusBadge } from "@/components/ui/status-badge";
+import { createClient } from "@/lib/supabase/client";
+import { naira, pct, formatDate } from "@/lib/utils";
+import { toast } from "sonner";
+
+type Project = {
+  id: string;
+  name: string;
+  category: string | null;
+  summary: string | null;
+  description: string | null;
+  target: number;
+  raised: number;
+  days_left: number;
+  status: string;
+  created_at: string | null;
+};
+
+type ProjectForm = {
+  name: string;
+  category: string;
+  summary: string;
+  description: string;
+  target: string;
+  days_left: string;
+  status: string;
+};
+
+const CATEGORIES = ["Agriculture", "Medicine", "Technology", "Textile", "Community", "Education", "Other"];
+const STATUS_OPTIONS = ["draft", "active", "completed"];
+const STATUS_FILTERS = ["all", "active", "draft", "completed"];
+
+const emptyForm: ProjectForm = { name: "", category: "Agriculture", summary: "", description: "", target: "", days_left: "30", status: "active" };
+
+const th = "text-left px-5 py-3 text-xs font-semibold uppercase tracking-wide text-ink-500 border-b border-ink-200 bg-ink-100 font-sans";
+const td = "px-5 py-4 text-sm text-ink-600 border-b border-ink-200 font-sans";
+const ta = "w-full rounded-lg border border-ink-200 px-4 py-3 font-sans text-sm text-ink bg-white resize-none focus:outline-none focus:border-brand focus:ring-2 focus:ring-brand/20 placeholder:text-ink-400";
+const sel = "w-full h-11 rounded-lg border border-ink-200 px-4 font-sans text-sm text-ink bg-white focus:outline-none focus:border-brand focus:ring-2 focus:ring-brand/20";
+
+export default function AdminProjectsPage() {
+  const [projects, setProjects] = useState<Project[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [showModal, setShowModal] = useState(false);
+  const [saving, setSaving] = useState(false);
+  const [editingId, setEditingId] = useState<string | null>(null);
+  const [form, setForm] = useState<ProjectForm>(emptyForm);
+  const [statusFilter, setStatusFilter] = useState("all");
+
+  const load = () => {
+    const supabase = createClient();
+    supabase
+      .from("projects")
+      .select("id, name, category, summary, description, target, raised, days_left, status, created_at")
+      .order("created_at", { ascending: false })
+      .then(({ data, error }) => {
+        if (error) toast.error("Could not load projects.");
+        setProjects((data as Project[]) ?? []);
+        setLoading(false);
+      });
+  };
+
+  useEffect(() => { load(); }, []);
+
+  const openCreate = () => { setEditingId(null); setForm(emptyForm); setShowModal(true); };
+  const openEdit = (p: Project) => {
+    setEditingId(p.id);
+    setForm({ name: p.name, category: p.category ?? "Agriculture", summary: p.summary ?? "", description: p.description ?? "", target: String(p.target), days_left: String(p.days_left), status: p.status });
+    setShowModal(true);
+  };
+
+  const f = (k: keyof ProjectForm) => (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) =>
+    setForm((prev) => ({ ...prev, [k]: e.target.value }));
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setSaving(true);
+    const supabase = createClient();
+    const payload = { name: form.name, category: form.category, summary: form.summary || null, description: form.description || null, target: parseFloat(form.target) || 0, days_left: parseInt(form.days_left) || 30, status: form.status };
+    const { error } = editingId
+      ? await supabase.from("projects").update(payload).eq("id", editingId)
+      : await supabase.from("projects").insert({ ...payload, raised: 0 });
+    setSaving(false);
+    if (error) { toast.error(`Failed to ${editingId ? "update" : "create"} project.`); return; }
+    toast.success(editingId ? "Project updated." : "Project created.");
+    setShowModal(false);
+    load();
+  };
+
+  const handleDelete = async (p: Project) => {
+    if (!confirm(`Delete "${p.name}"? This cannot be undone.`)) return;
+    setProjects((prev) => prev.filter((x) => x.id !== p.id));
+    const { error } = await createClient().from("projects").delete().eq("id", p.id);
+    if (error) { toast.error("Failed to delete project."); load(); }
+    else toast.success("Project deleted.");
+  };
+
+  const handleStatusToggle = async (p: Project) => {
+    const newStatus = p.status === "active" ? "completed" : "active";
+    setProjects((prev) => prev.map((x) => (x.id === p.id ? { ...x, status: newStatus } : x)));
+    const { error } = await createClient().from("projects").update({ status: newStatus }).eq("id", p.id);
+    if (error) { setProjects((prev) => prev.map((x) => (x.id === p.id ? { ...x, status: p.status } : x))); toast.error("Failed to update status."); }
+    else toast.success(`Project marked as ${newStatus}.`);
+  };
+
+  const filtered = statusFilter === "all" ? projects : projects.filter((p) => p.status === statusFilter);
+  const totalRaised = projects.reduce((s, p) => s + (p.raised ?? 0), 0);
+
+  const stats = [
+    { label: "Total Projects", value: projects.length },
+    { label: "Active", value: projects.filter((p) => p.status === "active").length },
+    { label: "Completed", value: projects.filter((p) => p.status === "completed").length },
+    { label: "Total Raised", value: naira(totalRaised) },
+  ];
+
+  return (
+    <>
+      <div className="p-7 flex flex-col gap-6">
+        <div className="flex items-center justify-between">
+          <div />
+          <Button variant="primary" size="sm" leadingIcon={<Plus size={15} />} onClick={openCreate}>
+            New Project
+          </Button>
+        </div>
+
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          {stats.map((s) => (
+            <Card key={s.label} padding="md" className="text-center">
+              <div className="font-display font-bold text-3xl text-ink leading-none">{loading ? "—" : s.value}</div>
+              <div className="mt-1 text-xs text-ink-500 font-sans">{s.label}</div>
+            </Card>
+          ))}
+        </div>
+
+        <Card padding="none" className="overflow-hidden">
+          <div className="px-5 py-3 border-b border-ink-200 flex items-center gap-1">
+            {STATUS_FILTERS.map((s) => (
+              <button key={s} onClick={() => setStatusFilter(s)}
+                className={`px-3 py-1.5 text-xs font-semibold rounded-md font-sans transition-colors capitalize ${statusFilter === s ? "bg-brand text-white" : "text-ink-500 hover:text-ink hover:bg-ink-100"}`}>
+                {s}
+              </button>
+            ))}
+          </div>
+
+          <div className="overflow-x-auto">
+            {loading ? (
+              <p className="px-5 py-10 text-sm text-ink-400 font-sans text-center">Loading projects…</p>
+            ) : filtered.length === 0 ? (
+              <p className="px-5 py-10 text-sm text-ink-400 font-sans text-center">No projects found. Create your first one.</p>
+            ) : (
+              <table className="w-full border-collapse">
+                <thead>
+                  <tr>
+                    <th className={th}>Project</th>
+                    <th className={th}>Category</th>
+                    <th className={th}>Target</th>
+                    <th className={th}>Raised</th>
+                    <th className={th}>Days Left</th>
+                    <th className={th}>Status</th>
+                    <th className={`${th} text-right`}>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {filtered.map((p) => {
+                    const progress = pct(p.raised ?? 0, p.target);
+                    return (
+                      <tr key={p.id} className="hover:bg-ink-100 transition-colors">
+                        <td className={td}>
+                          <div className="font-semibold text-ink text-sm max-w-52 line-clamp-1">{p.name}</div>
+                          {p.summary && <div className="text-xs text-ink-500 mt-0.5 max-w-52 line-clamp-1">{p.summary}</div>}
+                          <div className="text-xs text-ink-400 mt-0.5">{formatDate(p.created_at, { day: "numeric", month: "short" })}</div>
+                        </td>
+                        <td className={td}>
+                          {p.category ? <Badge tone="brand" size="sm">{p.category}</Badge> : "—"}
+                        </td>
+                        <td className={`${td} font-semibold text-ink`}>{naira(p.target)}</td>
+                        <td className={td}>
+                          <span className="font-semibold text-brand block">{naira(p.raised ?? 0)}</span>
+                          <div className="mt-1 w-24 h-1.5 bg-ink-200 rounded-full overflow-hidden">
+                            <div className="h-full bg-brand rounded-full transition-all" style={{ width: `${progress}%` }} />
+                          </div>
+                          <span className="text-xs text-ink-400">{progress}%</span>
+                        </td>
+                        <td className={td}>{p.days_left ?? "—"} days</td>
+                        <td className={td}><StatusBadge status={p.status} /></td>
+                        <td className={`${td} text-right`}>
+                          <div className="inline-flex items-center gap-1">
+                            {(p.status === "active" || p.status === "completed") && (
+                              <button onClick={() => handleStatusToggle(p)} title={p.status === "active" ? "Mark completed" : "Reactivate"}
+                                className="inline-flex items-center justify-center h-8 w-8 rounded-lg text-ink-500 hover:bg-ink-100 hover:text-ink transition-colors">
+                                {p.status === "active" ? <CheckCircle size={14} /> : <RotateCcw size={14} />}
+                              </button>
+                            )}
+                            <button onClick={() => openEdit(p)} title="Edit"
+                              className="inline-flex items-center justify-center h-8 w-8 rounded-lg text-ink-500 hover:bg-ink-100 hover:text-ink transition-colors">
+                              <Pencil size={14} />
+                            </button>
+                            <button onClick={() => handleDelete(p)} title="Delete"
+                              className="inline-flex items-center justify-center h-8 w-8 rounded-lg text-ink-500 hover:bg-error/10 hover:text-error transition-colors">
+                              <Trash2 size={14} />
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            )}
+          </div>
+        </Card>
+      </div>
+
+      {showModal && (
+        <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-xl shadow-xl w-full max-w-lg max-h-[90vh] overflow-y-auto">
+            <div className="sticky top-0 bg-white z-10 p-5 border-b border-ink-200 flex items-center justify-between">
+              <h3 className="font-display font-bold text-lg text-ink">{editingId ? "Edit Project" : "New Project"}</h3>
+              <button onClick={() => setShowModal(false)} className="text-ink-400 hover:text-ink transition-colors"><X size={20} /></button>
+            </div>
+            <form onSubmit={handleSubmit} className="p-5 flex flex-col gap-4">
+              <Input label="Project Name" value={form.name} onChange={f("name")} required placeholder="e.g. Cassava Processing Hub — Enugu" />
+              <div className="grid grid-cols-2 gap-4">
+                <div className="flex flex-col gap-1.5">
+                  <label className="text-sm font-semibold text-ink font-sans">Category</label>
+                  <select value={form.category} onChange={f("category")} className={sel}>
+                    {CATEGORIES.map((c) => <option key={c} value={c}>{c}</option>)}
+                  </select>
+                </div>
+                <div className="flex flex-col gap-1.5">
+                  <label className="text-sm font-semibold text-ink font-sans">Status</label>
+                  <select value={form.status} onChange={f("status")} className={sel}>
+                    {STATUS_OPTIONS.map((s) => <option key={s} value={s} className="capitalize">{s.charAt(0).toUpperCase() + s.slice(1)}</option>)}
+                  </select>
+                </div>
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <Input label="Funding Target (₦)" type="number" min="0" step="0.01" value={form.target} onChange={f("target")} required placeholder="0.00" />
+                <Input label="Days to Run" type="number" min="1" value={form.days_left} onChange={f("days_left")} required />
+              </div>
+              <div className="flex flex-col gap-1.5">
+                <label className="text-sm font-semibold text-ink font-sans">Summary <span className="font-normal text-ink-400">(shown on card)</span></label>
+                <textarea value={form.summary} onChange={f("summary")} placeholder="One or two sentences describing the project…" rows={2} className={ta} />
+              </div>
+              <div className="flex flex-col gap-1.5">
+                <label className="text-sm font-semibold text-ink font-sans">Full Description</label>
+                <textarea value={form.description} onChange={f("description")} placeholder="Detailed project description…" rows={4} className={ta} />
+              </div>
+              <div className="flex gap-3 justify-end pt-1">
+                <Button type="button" variant="ghost" onClick={() => setShowModal(false)}>Cancel</Button>
+                <Button type="submit" variant="primary" loading={saving} leadingIcon={editingId ? <Pencil size={15} /> : <Plus size={15} />}>
+                  {editingId ? "Save Changes" : "Create Project"}
+                </Button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+    </>
+  );
+}

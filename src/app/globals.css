@@ -1,0 +1,86 @@
+@import "tailwindcss";
+
+@theme {
+  /* Brand: green */
+  --color-brand: #1A6B3C;
+  --color-brand-hover: #2E9B5A;
+  --color-brand-light: #E8F5EE;
+  --color-brand-deep: #0F3D22;
+  --color-brand-mid: #8FCFA9;
+
+  /* Brand: gold */
+  --color-gold: #F5C518;
+  --color-gold-dark: #C99A0C;
+  --color-gold-light: #FFF3C4;
+  --color-gold-mid: #FBDD6E;
+
+  /* Neutrals — ink scale */
+  --color-ink: #0F1A14;
+  --color-ink-800: #1E2A22;
+  --color-ink-700: #2E3A32;
+  --color-ink-600: #4A5568;
+  --color-ink-500: #6B7280;
+  --color-ink-400: #9AA3AE;
+  --color-ink-300: #CBD2D0;
+  --color-ink-200: #E5E9E7;
+  --color-ink-100: #F7F8F7;
+
+  /* Semantic */
+  --color-error: #DC2626;
+  --color-error-bg: #FEECEC;
+  --color-success-green: #16A34A;
+  --color-success-bg: #E7F6ED;
+  --color-warning: #D97706;
+  --color-warning-bg: #FDF1E3;
+
+  /* Fonts */
+  --font-display: var(--font-bricolage, "Bricolage Grotesque", "Inter", system-ui, sans-serif);
+  --font-sans: var(--font-inter, "Inter", system-ui, sans-serif);
+  --font-mono: var(--font-jetbrains, "JetBrains Mono", ui-monospace, monospace);
+
+  /* Shadows */
+  --shadow-xs: 0 1px 2px rgba(15, 26, 20, 0.05);
+  --shadow-sm: 0 1px 3px rgba(15, 26, 20, 0.08), 0 1px 2px rgba(15, 26, 20, 0.04);
+  --shadow-md: 0 4px 12px rgba(15, 26, 20, 0.08), 0 2px 4px rgba(15, 26, 20, 0.04);
+  --shadow-lg: 0 12px 28px rgba(15, 26, 20, 0.12), 0 4px 8px rgba(15, 26, 20, 0.05);
+}
+
+:root {
+  --brand-primary: #1A6B3C;
+  --brand-secondary: #2E9B5A;
+  --brand-light: #E8F5EE;
+  --accent: #F5C518;
+  --accent-dark: #C99A0C;
+  --accent-light: #FFF3C4;
+  --text-heading: #0F1A14;
+  --text-body: #4A5568;
+  --text-muted: #6B7280;
+  --text-inverse: #ffffff;
+  --surface-card: #ffffff;
+  --surface-page: #F7F8F7;
+  --surface-sunken: #E8F5EE;
+  --surface-inverse: #0F1A14;
+  --border-subtle: #E5E9E7;
+  --border-strong: #CBD2D0;
+  --border-focus: #1A6B3C;
+  --header-height: 72px;
+  --container-max: 80rem;
+  --container-pad: 1.5rem;
+  --ring-focus: 0 0 0 2px #fff, 0 0 0 4px #2E9B5A;
+  --transition-base: all 200ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: #F7F8F7;
+  color: #0F1A14;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+* {
+  box-sizing: border-box;
+}
