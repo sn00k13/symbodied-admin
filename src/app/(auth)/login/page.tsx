@@ -6,6 +6,7 @@ import { Mail, Lock, ShieldAlert } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { PasswordInput } from "@/components/ui/password-input";
 import { createClient } from "@/lib/supabase/client";
 import { getUserRole } from "@/app/actions/auth";
 
@@ -70,10 +71,9 @@ export default function AdminLoginPage() {
           autoComplete="email"
           leadingIcon={<Mail size={16} />}
         />
-        <Input
+        <PasswordInput
           label="Password"
           name="password"
-          type="password"
           placeholder="••••••••"
           required
           autoComplete="current-password"

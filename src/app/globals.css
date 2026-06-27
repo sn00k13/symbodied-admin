@@ -1,5 +1,8 @@
 @import "tailwindcss";
 
+/* Class-based dark mode for Tailwind v4 */
+@custom-variant dark (&:where(.dark, .dark *));
+
 @theme {
   /* Brand: green */
   --color-brand: #1A6B3C;
@@ -74,9 +77,28 @@ html {
   scroll-behavior: smooth;
 }
 
+/* Dark mode token overrides */
+.dark {
+  --brand-primary: #2E9B5A;
+  --brand-light: #112618;
+  --text-heading: #dceee3;
+  --text-body: #89a895;
+  --text-muted: #668074;
+  --text-inverse: #0f1611;
+  --surface-card: #162018;
+  --surface-page: #0f1611;
+  --surface-sunken: #112618;
+  --surface-inverse: #dceee3;
+  --border-subtle: #263a2b;
+  --border-strong: #344f3b;
+  --border-focus: #2E9B5A;
+  --error-bg: #2c1414;
+  --ring-focus: 0 0 0 2px #0f1611, 0 0 0 4px #2E9B5A;
+}
+
 body {
-  background-color: #F7F8F7;
-  color: #0F1A14;
+  background-color: var(--surface-page, #F7F8F7);
+  color: var(--text-heading, #0F1A14);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }

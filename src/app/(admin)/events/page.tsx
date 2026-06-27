@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Search, Bell, Plus, X, Pencil, Trash2, MapPin, Calendar } from "lucide-react";
+import { Search, Bell, Plus, X, Pencil, Trash2, MapPin, Calendar, Users } from "lucide-react";
+import Link from "next/link";
 import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -16,8 +17,8 @@ type EventRow = {
   name: string;
   theme: string | null;
   venue: string | null;
-  city: string | null;
-  event_date: string | null;
+  location: string | null;
+  date: string | null;
   slots: number | null;
   created_at: string | null;
   status: string;
@@ -28,8 +29,8 @@ type EventForm = {
   name: string;
   theme: string;
   venue: string;
-  city: string;
-  event_date: string;
+  location: string;
+  date: string;
   slots: string;
   status: string;
 };
@@ -38,7 +39,7 @@ type StatusFilter = "all" | "pending" | "approved" | "rejected";
 
 const STATUS_FILTERS: StatusFilter[] = ["all", "pending", "approved", "rejected"];
 const STATUS_OPTIONS = ["draft", "pending", "approved", "rejected"];
-const emptyForm: EventForm = { name: "", theme: "", venue: "", city: "", event_date: "", slots: "", status: "approved" };
+const emptyForm: EventForm = { name: "", theme: "", venue: "", location: "", date: "", slots: "", status: "approved" };
 
 const th = "text-left px-5 py-3 text-xs font-semibold uppercase tracking-wide text-ink-500 border-b border-ink-200 bg-ink-100 font-sans";
 const td = "px-5 py-4 text-sm text-ink-600 border-b border-ink-200 font-sans";
@@ -55,13 +56,13 @@ export default function AdminEventsPage() {
   const [form, setForm] = useState<EventForm>(emptyForm);
   const [currentUserId, setCurrentUserId] = useState<string | null>(null);
 
-  type RawEvent = { id: string; name: string; theme: string | null; venue: string | null; city: string | null; event_date: string | null; slots: number | null; created_at: string | null; status: string; profiles?: { first_name: string | null; last_name: string | null } | { first_name: string | null; last_name: string | null }[] | null };
+  type RawEvent = { id: string; name: string; theme: string | null; venue: string | null; location: string | null; date: string | null; slots: number | null; created_at: string | null; status: string; profiles?: { first_name: string | null; last_name: string | null } | { first_name: string | null; last_name: string | null }[] | null };
 
   const load = () => {
     const supabase = createClient();
     supabase
       .from("events")
-      .select("id, name, theme, venue, city, event_date, slots, created_at, status, profiles(first_name, last_name)")
+      .select("id, name, theme, venue, location, date, slots, created_at, status, profiles(first_name, last_name)")
       .order("created_at", { ascending: false })
       .then(({ data }) => {
         setRows(
@@ -83,7 +84,7 @@ export default function AdminEventsPage() {
   const openCreate = () => { setEditingId(null); setForm(emptyForm); setShowModal(true); };
   const openEdit = (r: EventRow) => {
     setEditingId(r.id);
-    setForm({ name: r.name, theme: r.theme ?? "", venue: r.venue ?? "", city: r.city ?? "", event_date: r.event_date ? r.event_date.slice(0, 10) : "", slots: r.slots != null ? String(r.slots) : "", status: r.status });
+    setForm({ name: r.name, theme: r.theme ?? "", venue: r.venue ?? "", location: r.location ?? "", date: r.date ? r.date.slice(0, 10) : "", slots: r.slots != null ? String(r.slots) : "", status: r.status });
     setShowModal(true);
   };
 
@@ -94,7 +95,7 @@ export default function AdminEventsPage() {
     e.preventDefault();
     setSaving(true);
     const supabase = createClient();
-    const payload = { name: form.name, theme: form.theme || null, venue: form.venue || null, city: form.city || null, event_date: form.event_date || null, slots: form.slots ? parseInt(form.slots) : null, status: form.status };
+    const payload = { name: form.name, theme: form.theme || null, venue: form.venue || null, location: form.location || null, date: form.date || null, slots: form.slots ? parseInt(form.slots) : null, status: form.status };
     const { error } = editingId
       ? await supabase.from("events").update(payload).eq("id", editingId)
       : await supabase.from("events").insert({ ...payload, user_id: currentUserId });
@@ -124,13 +125,26 @@ export default function AdminEventsPage() {
     if (statusFilter !== "all" && r.status !== statusFilter) return false;
     if (!search) return true;
     const q = search.toLowerCase();
-    return r.name.toLowerCase().includes(q) || (r.city ?? "").toLowerCase().includes(q) || (r.author ?? "").toLowerCase().includes(q);
+    return r.name.toLowerCase().includes(q) || (r.location ?? "").toLowerCase().includes(q) || (r.author ?? "").toLowerCase().includes(q);
   });
 
   const pending = rows.filter((r) => r.status === "pending").length;
 
   return (
     <>
+      {/* Tab nav */}
+      <div className="flex items-center gap-1 border-b border-ink-200 px-7 pt-5 bg-white dark:bg-[#162018]">
+        <div className="px-4 py-2.5 text-sm font-semibold font-sans text-ink border-b-2 border-brand dark:text-[#dceee3]">
+          Manage Events
+        </div>
+        <Link
+          href="/events/rsvps"
+          className="px-4 py-2.5 text-sm font-semibold font-sans text-ink-500 hover:text-ink dark:text-[#668074] dark:hover:text-[#dceee3] transition-colors flex items-center gap-1.5"
+        >
+          <Users size={14} /> RSVPs
+        </Link>
+      </div>
+
       <div className="p-7 flex flex-col gap-6">
         <div className="flex items-center justify-between">
           {pending > 0 ? (
@@ -187,18 +201,18 @@ export default function AdminEventsPage() {
                       </td>
                       <td className={td}>{r.author ?? "Admin"}</td>
                       <td className={td}>
-                        {r.event_date ? (
+                        {r.date ? (
                           <span className="flex items-center gap-1.5">
                             <Calendar size={13} className="text-ink-400" />
-                            {formatDate(r.event_date, { day: "numeric", month: "short", year: "numeric" })}
+                            {formatDate(r.date, { day: "numeric", month: "short", year: "numeric" })}
                           </span>
                         ) : "—"}
                       </td>
                       <td className={td}>
-                        {r.city ? (
+                        {r.location ? (
                           <span className="flex items-center gap-1.5">
                             <MapPin size={13} className="text-ink-400" />
-                            {r.venue ? `${r.venue}, ` : ""}{r.city}
+                            {r.venue ? `${r.venue}, ` : ""}{r.location}
                           </span>
                         ) : "—"}
                       </td>
@@ -243,10 +257,10 @@ export default function AdminEventsPage() {
               <Input label="Theme" value={form.theme} onChange={f("theme")} placeholder="Optional theme or tagline" />
               <div className="grid grid-cols-2 gap-4">
                 <Input label="Venue" value={form.venue} onChange={f("venue")} placeholder="Hall, address…" />
-                <Input label="City" value={form.city} onChange={f("city")} placeholder="Lagos, Enugu…" />
+                <Input label="Location" value={form.location} onChange={f("location")} placeholder="Lagos, Enugu…" />
               </div>
               <div className="grid grid-cols-2 gap-4">
-                <Input label="Date" type="date" value={form.event_date} onChange={f("event_date")} />
+                <Input label="Date" type="date" value={form.date} onChange={f("date")} />
                 <Input label="Slots" type="number" min="1" value={form.slots} onChange={f("slots")} placeholder="Max attendees" />
               </div>
               <div className="flex flex-col gap-1.5">

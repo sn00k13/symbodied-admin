@@ -27,10 +27,10 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
             ref={ref}
             id={inputId}
             className={cn(
-              "w-full h-11 rounded-lg border font-sans text-sm text-ink bg-white",
-              "border-ink-200 placeholder:text-ink-400",
+              "w-full h-11 rounded-lg border font-sans text-sm text-ink dark:text-[#dceee3] bg-white dark:bg-[#162018]",
+              "border-ink-200 dark:border-[#263a2b] placeholder:text-ink-400 dark:placeholder:text-[#4d6356]",
               "transition-all duration-200",
-              "focus:outline-none focus:border-brand focus:ring-2 focus:ring-brand/20",
+              "focus:outline-none focus:border-brand focus:ring-2 focus:ring-brand/20 dark:focus:ring-brand/30",
               error && "border-error focus:border-error focus:ring-error/20",
               leadingIcon ? "pl-10" : "pl-4",
               trailingIcon ? "pr-10" : "pr-4",

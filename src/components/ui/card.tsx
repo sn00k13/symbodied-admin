@@ -24,7 +24,7 @@ export function Card({ hoverable = false, padding = "md", className, children, o
       onClick={onClick}
       style={style}
       className={cn(
-        "bg-white rounded-xl border border-ink-200",
+        "bg-white dark:bg-[#162018] rounded-xl border border-ink-200 dark:border-[#263a2b]",
         "shadow-[var(--shadow-sm)]",
         hoverable && "transition-all duration-200 cursor-pointer hover:shadow-[var(--shadow-lg)] hover:-translate-y-0.5",
         onClick && "cursor-pointer",
