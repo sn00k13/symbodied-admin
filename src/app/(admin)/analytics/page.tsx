@@ -11,8 +11,8 @@ const PROGRAM_COLORS: Record<string, string> = {
   Technology: "#9AA3AE",
 };
 
-const th = "text-left px-5 py-3 text-xs font-semibold uppercase tracking-wide text-ink-500 border-b border-ink-200 bg-ink-100 font-sans";
-const td = "px-5 py-4 text-sm text-ink-600 border-b border-ink-200 font-sans";
+const th = "text-left px-5 py-3 text-xs font-semibold uppercase tracking-wide text-ink-500 dark:text-[#668074] border-b border-ink-200 dark:border-[#263a2b] bg-ink-100 dark:bg-[#1b2d20] font-sans";
+const td = "px-5 py-4 text-sm text-ink-600 dark:text-[#89a895] border-b border-ink-200 dark:border-[#263a2b] font-sans";
 
 export default async function AdminAnalyticsPage() {
   const supabase = createServiceClient();
@@ -143,45 +143,45 @@ export default async function AdminAnalyticsPage() {
       {/* Charts row */}
       <div className="grid lg:grid-cols-[1.6fr_1fr] gap-5">
         <Card padding="none" className="overflow-hidden">
-          <div className="px-5 py-4 border-b border-ink-200 flex items-center justify-between">
-            <h3 className="font-sans font-bold text-base text-ink">Orders This Week</h3>
-            <span className="text-xs text-ink-500 font-sans">{dateLabel}</span>
+          <div className="px-5 py-4 border-b border-ink-200 dark:border-[#263a2b] flex items-center justify-between">
+            <h3 className="font-sans font-bold text-base text-ink dark:text-[#dceee3]">Orders This Week</h3>
+            <span className="text-xs text-ink-500 dark:text-[#668074] font-sans">{dateLabel}</span>
           </div>
           <div className="p-6 flex items-end gap-4 h-52">
             {weeklyData.map((w) => (
               <div key={w.label} className="flex-1 flex flex-col items-center gap-2 h-full justify-end">
-                {w.count > 0 && <span className="text-xs text-ink-500 font-sans">{w.count}</span>}
+                {w.count > 0 && <span className="text-xs text-ink-500 dark:text-[#668074] font-sans">{w.count}</span>}
                 <div
                   className="w-full max-w-9 rounded-t-md"
                   style={{
                     height: `${(w.count / maxCount) * 100}%`,
                     minHeight: w.count > 0 ? "6px" : "3px",
-                    background: w.count > 0 ? "linear-gradient(180deg, #2E9B5A, #1A6B3C)" : "#E5E9E7",
+                    background: w.count > 0 ? "linear-gradient(180deg, #2E9B5A, #1A6B3C)" : "var(--border-subtle)",
                   }}
                 />
-                <span className="text-xs text-ink-400 font-sans">{w.label}</span>
+                <span className="text-xs text-ink-400 dark:text-[#4d6356] font-sans">{w.label}</span>
               </div>
             ))}
           </div>
         </Card>
 
         <Card padding="none" className="overflow-hidden">
-          <div className="px-5 py-4 border-b border-ink-200">
-            <h3 className="font-sans font-bold text-base text-ink">Products by Program</h3>
+          <div className="px-5 py-4 border-b border-ink-200 dark:border-[#263a2b]">
+            <h3 className="font-sans font-bold text-base text-ink dark:text-[#dceee3]">Products by Program</h3>
           </div>
           <div className="p-6 flex flex-col gap-5">
             {cats.length > 0 ? cats.map((c) => (
               <div key={c.n}>
                 <div className="flex justify-between text-sm mb-1.5 font-sans">
-                  <span className="text-ink-600">{c.n}</span>
-                  <strong className="text-ink">{c.v}%</strong>
+                  <span className="text-ink-600 dark:text-[#89a895]">{c.n}</span>
+                  <strong className="text-ink dark:text-[#dceee3]">{c.v}%</strong>
                 </div>
-                <div className="h-2 bg-ink-200 rounded-full overflow-hidden">
+                <div className="h-2 bg-ink-200 dark:bg-[#263a2b] rounded-full overflow-hidden">
                   <div className="h-full rounded-full" style={{ width: `${c.v}%`, background: c.color }} />
                 </div>
               </div>
             )) : (
-              <p className="text-sm text-ink-400 font-sans">No product data yet.</p>
+              <p className="text-sm text-ink-400 dark:text-[#4d6356] font-sans">No product data yet.</p>
             )}
           </div>
         </Card>
@@ -189,8 +189,8 @@ export default async function AdminAnalyticsPage() {
 
       {/* Top vendors */}
       <Card padding="none" className="overflow-hidden">
-        <div className="px-5 py-4 border-b border-ink-200">
-          <h3 className="font-sans font-bold text-base text-ink">Top Vendors by GMV</h3>
+        <div className="px-5 py-4 border-b border-ink-200 dark:border-[#263a2b]">
+          <h3 className="font-sans font-bold text-base text-ink dark:text-[#dceee3]">Top Vendors by GMV</h3>
         </div>
         <div className="overflow-x-auto">
           {topVendors.length > 0 ? (
@@ -205,17 +205,17 @@ export default async function AdminAnalyticsPage() {
               </thead>
               <tbody>
                 {topVendors.map((v, i) => (
-                  <tr key={v.name} className="hover:bg-ink-100 transition-colors">
-                    <td className={td}><span className="text-ink-400 font-mono text-xs">{i + 1}</span></td>
-                    <td className={`${td} font-semibold text-ink`}>{v.name}</td>
+                  <tr key={v.name} className="hover:bg-ink-100 dark:hover:bg-[#1b2d20] transition-colors">
+                    <td className={td}><span className="text-ink-400 dark:text-[#4d6356] font-mono text-xs">{i + 1}</span></td>
+                    <td className={`${td} font-semibold text-ink dark:text-[#dceee3]`}>{v.name}</td>
                     <td className={td}>{v.orders}</td>
-                    <td className={`${td} font-semibold text-brand`}>{naira(v.gmv)}</td>
+                    <td className={`${td} font-semibold text-brand dark:text-[#2E9B5A]`}>{naira(v.gmv)}</td>
                   </tr>
                 ))}
               </tbody>
             </table>
           ) : (
-            <p className="px-5 py-8 text-sm text-ink-400 font-sans text-center">No order data yet.</p>
+            <p className="px-5 py-8 text-sm text-ink-400 dark:text-[#4d6356] font-sans text-center">No order data yet.</p>
           )}
         </div>
       </Card>
@@ -223,8 +223,8 @@ export default async function AdminAnalyticsPage() {
       {/* Top products */}
       {topProducts && topProducts.length > 0 && (
         <Card padding="none" className="overflow-hidden">
-          <div className="px-5 py-4 border-b border-ink-200">
-            <h3 className="font-sans font-bold text-base text-ink">Top Products by Units Sold</h3>
+          <div className="px-5 py-4 border-b border-ink-200 dark:border-[#263a2b]">
+            <h3 className="font-sans font-bold text-base text-ink dark:text-[#dceee3]">Top Products by Units Sold</h3>
           </div>
           <div className="overflow-x-auto">
             <table className="w-full border-collapse">
@@ -241,12 +241,12 @@ export default async function AdminAnalyticsPage() {
                 {topProducts.map((p, i) => {
                   const prod = p as { name: string | null; category: string | null; no_sold: number | null; price: number | null };
                   return (
-                    <tr key={i} className="hover:bg-ink-100 transition-colors">
-                      <td className={td}><span className="text-ink-400 font-mono text-xs">{i + 1}</span></td>
-                      <td className={`${td} font-semibold text-ink`}>{prod.name ?? "—"}</td>
+                    <tr key={i} className="hover:bg-ink-100 dark:hover:bg-[#1b2d20] transition-colors">
+                      <td className={td}><span className="text-ink-400 dark:text-[#4d6356] font-mono text-xs">{i + 1}</span></td>
+                      <td className={`${td} font-semibold text-ink dark:text-[#dceee3]`}>{prod.name ?? "—"}</td>
                       <td className={td}>{prod.category ?? "—"}</td>
                       <td className={td}>{prod.price != null ? naira(prod.price) : "—"}</td>
-                      <td className={`${td} font-semibold text-brand`}>{prod.no_sold ?? 0}</td>
+                      <td className={`${td} font-semibold text-brand dark:text-[#2E9B5A]`}>{prod.no_sold ?? 0}</td>
                     </tr>
                   );
                 })}

@@ -41,9 +41,9 @@ const STATUS_FILTERS: StatusFilter[] = ["all", "pending", "approved", "rejected"
 const STATUS_OPTIONS = ["draft", "pending", "approved", "rejected"];
 const emptyForm: EventForm = { name: "", theme: "", venue: "", location: "", date: "", slots: "", status: "approved" };
 
-const th = "text-left px-5 py-3 text-xs font-semibold uppercase tracking-wide text-ink-500 border-b border-ink-200 bg-ink-100 font-sans";
-const td = "px-5 py-4 text-sm text-ink-600 border-b border-ink-200 font-sans";
-const sel = "w-full h-11 rounded-lg border border-ink-200 px-4 font-sans text-sm text-ink bg-white focus:outline-none focus:border-brand focus:ring-2 focus:ring-brand/20";
+const th = "text-left px-5 py-3 text-xs font-semibold uppercase tracking-wide text-ink-500 dark:text-[#668074] border-b border-ink-200 dark:border-[#263a2b] bg-ink-100 dark:bg-[#1b2d20] font-sans";
+const td = "px-5 py-4 text-sm text-ink-600 dark:text-[#89a895] border-b border-ink-200 dark:border-[#263a2b] font-sans";
+const sel = "w-full h-11 rounded-lg border border-ink-200 dark:border-[#263a2b] px-4 font-sans text-sm text-ink dark:text-[#dceee3] bg-white dark:bg-[#1b2d20] focus:outline-none focus:border-brand focus:ring-2 focus:ring-brand/20";
 
 export default function AdminEventsPage() {
   const [rows, setRows] = useState<EventRow[]>([]);
@@ -133,7 +133,7 @@ export default function AdminEventsPage() {
   return (
     <>
       {/* Tab nav */}
-      <div className="flex items-center gap-1 border-b border-ink-200 px-7 pt-5 bg-white dark:bg-[#162018]">
+      <div className="flex items-center gap-1 border-b border-ink-200 dark:border-[#263a2b] px-7 pt-5 bg-white dark:bg-[#162018]">
         <div className="px-4 py-2.5 text-sm font-semibold font-sans text-ink border-b-2 border-brand dark:text-[#dceee3]">
           Manage Events
         </div>
@@ -161,16 +161,16 @@ export default function AdminEventsPage() {
           {STATUS_FILTERS.map((s) => (
             <Card key={s} padding="sm" className="text-center cursor-pointer" onClick={() => setStatusFilter(s)}
               style={{ outline: statusFilter === s ? "2px solid #1A6B3C" : undefined }}>
-              <div className="font-display font-bold text-2xl text-ink leading-none">
+              <div className="font-display font-bold text-2xl text-ink dark:text-[#dceee3] leading-none">
                 {loading ? "—" : (s === "all" ? rows.length : rows.filter((r) => r.status === s).length)}
               </div>
-              <div className="mt-0.5 text-xs text-ink-500 font-sans capitalize">{s}</div>
+              <div className="mt-0.5 text-xs text-ink-500 dark:text-[#668074] font-sans capitalize">{s}</div>
             </Card>
           ))}
         </div>
 
         <Card padding="none" className="overflow-hidden">
-          <div className="px-5 py-4 border-b border-ink-200 max-w-sm">
+          <div className="px-5 py-4 border-b border-ink-200 dark:border-[#263a2b] max-w-sm">
             <Input placeholder="Search events…" value={search} onChange={(e) => setSearch(e.target.value)} leadingIcon={<Search size={15} />} />
           </div>
 
@@ -194,8 +194,8 @@ export default function AdminEventsPage() {
                 </thead>
                 <tbody>
                   {filtered.map((r) => (
-                    <tr key={r.id} className="hover:bg-ink-100 transition-colors">
-                      <td className={`${td} font-semibold text-ink max-w-52`}>
+                    <tr key={r.id} className="hover:bg-ink-100 dark:hover:bg-[#1b2d20] transition-colors">
+                      <td className={`${td} font-semibold text-ink dark:text-[#dceee3] max-w-52`}>
                         <div className="line-clamp-1">{r.name}</div>
                         {r.theme && <Badge tone="neutral" size="sm" className="mt-1">{r.theme}</Badge>}
                       </td>
@@ -227,7 +227,7 @@ export default function AdminEventsPage() {
                             </>
                           )}
                           <button onClick={() => openEdit(r)} title="Edit"
-                            className="inline-flex items-center justify-center h-8 w-8 rounded-lg text-ink-500 hover:bg-ink-100 hover:text-ink transition-colors">
+                            className="inline-flex items-center justify-center h-8 w-8 rounded-lg text-ink-500 dark:text-[#668074] hover:bg-ink-100 dark:hover:bg-[#1b2d20] hover:text-ink dark:hover:text-[#dceee3] transition-colors">
                             <Pencil size={14} />
                           </button>
                           <button onClick={() => handleDelete(r)} title="Delete"
@@ -246,11 +246,11 @@ export default function AdminEventsPage() {
       </div>
 
       {showModal && (
-        <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-xl shadow-xl w-full max-w-lg max-h-[90vh] overflow-y-auto">
-            <div className="sticky top-0 bg-white z-10 p-5 border-b border-ink-200 flex items-center justify-between">
-              <h3 className="font-display font-bold text-lg text-ink">{editingId ? "Edit Event" : "Create Event"}</h3>
-              <button onClick={() => setShowModal(false)} className="text-ink-400 hover:text-ink transition-colors"><X size={20} /></button>
+        <div className="fixed inset-0 bg-black/50 dark:bg-black/70 flex items-center justify-center z-50 p-4">
+          <div className="bg-white dark:bg-[#162018] rounded-xl shadow-xl w-full max-w-lg max-h-[90vh] overflow-y-auto border border-transparent dark:border-[#263a2b]">
+            <div className="sticky top-0 bg-white dark:bg-[#162018] z-10 p-5 border-b border-ink-200 dark:border-[#263a2b] flex items-center justify-between">
+              <h3 className="font-display font-bold text-lg text-ink dark:text-[#dceee3]">{editingId ? "Edit Event" : "Create Event"}</h3>
+              <button onClick={() => setShowModal(false)} className="text-ink-400 dark:text-[#4d6356] hover:text-ink dark:hover:text-[#dceee3] transition-colors"><X size={20} /></button>
             </div>
             <form onSubmit={handleSubmit} className="p-5 flex flex-col gap-4">
               <Input label="Event Name" value={form.name} onChange={f("name")} required placeholder="e.g. Community Harvest Festival" />
@@ -264,7 +264,7 @@ export default function AdminEventsPage() {
                 <Input label="Slots" type="number" min="1" value={form.slots} onChange={f("slots")} placeholder="Max attendees" />
               </div>
               <div className="flex flex-col gap-1.5">
-                <label className="text-sm font-semibold text-ink font-sans">Status</label>
+                <label className="text-sm font-semibold text-ink dark:text-[#dceee3] font-sans">Status</label>
                 <select value={form.status} onChange={f("status")} className={sel}>
                   {STATUS_OPTIONS.map((s) => <option key={s} value={s} className="capitalize">{s.charAt(0).toUpperCase() + s.slice(1)}</option>)}
                 </select>

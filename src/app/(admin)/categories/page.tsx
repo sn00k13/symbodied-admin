@@ -16,8 +16,8 @@ type CategoryRow = {
   created_by: string | null;
 };
 
-const th = "text-left px-5 py-3 text-xs font-semibold uppercase tracking-wide text-ink-500 border-b border-ink-200 bg-ink-100 font-sans";
-const td = "px-5 py-4 text-sm text-ink-600 border-b border-ink-200 font-sans";
+const th = "text-left px-5 py-3 text-xs font-semibold uppercase tracking-wide text-ink-500 dark:text-[#668074] border-b border-ink-200 dark:border-[#263a2b] bg-ink-100 dark:bg-[#1b2d20] font-sans";
+const td = "px-5 py-4 text-sm text-ink-600 dark:text-[#89a895] border-b border-ink-200 dark:border-[#263a2b] font-sans";
 
 export default function AdminCategoriesPage() {
   const [categories, setCategories] = useState<CategoryRow[]>([]);
@@ -105,7 +105,7 @@ export default function AdminCategoriesPage() {
     <div className="p-7 flex flex-col gap-6">
       {/* Add new category */}
       <Card padding="md">
-        <h3 className="font-sans font-bold text-base text-ink mb-4">Add New Category</h3>
+        <h3 className="font-sans font-bold text-base text-ink dark:text-[#dceee3] mb-4">Add New Category</h3>
         <div className="flex gap-3 max-w-lg">
           <div className="flex-1">
             <Input
@@ -129,9 +129,9 @@ export default function AdminCategoriesPage() {
 
       {/* Categories table */}
       <Card padding="none" className="overflow-hidden">
-        <div className="px-5 py-4 border-b border-ink-200 flex items-center justify-between">
-          <h3 className="font-sans font-bold text-base text-ink">All Categories</h3>
-          <span className="text-xs text-ink-500 font-sans">{categories.length} total</span>
+        <div className="px-5 py-4 border-b border-ink-200 dark:border-[#263a2b] flex items-center justify-between">
+          <h3 className="font-sans font-bold text-base text-ink dark:text-[#dceee3]">All Categories</h3>
+          <span className="text-xs text-ink-500 dark:text-[#668074] font-sans">{categories.length} total</span>
         </div>
 
         <div className="overflow-x-auto">
@@ -151,11 +151,11 @@ export default function AdminCategoriesPage() {
               </thead>
               <tbody>
                 {categories.map((cat, i) => (
-                  <tr key={cat.id} className="hover:bg-ink-100 transition-colors">
+                  <tr key={cat.id} className="hover:bg-ink-100 dark:hover:bg-[#1b2d20] transition-colors">
                     <td className={td}>
-                      <span className="text-ink-400 font-mono text-xs">{i + 1}</span>
+                      <span className="text-ink-400 dark:text-[#4d6356] font-mono text-xs">{i + 1}</span>
                     </td>
-                    <td className={`${td} font-semibold text-ink`}>
+                    <td className={`${td} font-semibold text-ink dark:text-[#dceee3]`}>
                       {editingId === cat.id ? (
                         <input
                           ref={editRef}
@@ -165,7 +165,7 @@ export default function AdminCategoriesPage() {
                             if (e.key === "Enter") saveEdit(cat.id);
                             if (e.key === "Escape") cancelEdit();
                           }}
-                          className="w-full border border-brand rounded-lg px-3 py-1.5 text-sm text-ink font-sans focus:outline-none focus:ring-2 focus:ring-brand/20"
+                          className="w-full border border-brand rounded-lg px-3 py-1.5 text-sm text-ink dark:text-[#dceee3] bg-white dark:bg-[#1b2d20] font-sans focus:outline-none focus:ring-2 focus:ring-brand/20"
                         />
                       ) : (
                         cat.name

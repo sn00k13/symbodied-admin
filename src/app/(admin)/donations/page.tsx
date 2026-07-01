@@ -19,8 +19,8 @@ type DonationRow = {
   created_at: string | null;
 };
 
-const th = "text-left px-5 py-3 text-xs font-semibold uppercase tracking-wide text-ink-500 border-b border-ink-200 bg-ink-100 font-sans";
-const td = "px-5 py-4 text-sm text-ink-600 border-b border-ink-200 font-sans";
+const th = "text-left px-5 py-3 text-xs font-semibold uppercase tracking-wide text-ink-500 dark:text-[#668074] border-b border-ink-200 dark:border-[#263a2b] bg-ink-100 dark:bg-[#1b2d20] font-sans";
+const td = "px-5 py-4 text-sm text-ink-600 dark:text-[#89a895] border-b border-ink-200 dark:border-[#263a2b] font-sans";
 
 export default function AdminDonationsPage() {
   const [rows, setRows] = useState<DonationRow[]>([]);
@@ -63,14 +63,14 @@ export default function AdminDonationsPage() {
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         {stats.map((s) => (
           <Card key={s.label} padding="md" className="text-center">
-            <div className="font-display font-bold text-2xl text-ink leading-none">{loading ? "—" : s.value}</div>
-            <div className="mt-1 text-xs text-ink-500 font-sans">{s.label}</div>
+            <div className="font-display font-bold text-2xl text-ink dark:text-[#dceee3] leading-none">{loading ? "—" : s.value}</div>
+            <div className="mt-1 text-xs text-ink-500 dark:text-[#668074] font-sans">{s.label}</div>
           </Card>
         ))}
       </div>
 
       <Card padding="none" className="overflow-hidden">
-        <div className="px-5 py-4 border-b border-ink-200 max-w-sm">
+        <div className="px-5 py-4 border-b border-ink-200 dark:border-[#263a2b] max-w-sm">
           <Input
             placeholder="Search by project, donor or payment ref..."
             value={search}
@@ -99,8 +99,8 @@ export default function AdminDonationsPage() {
               </thead>
               <tbody>
                 {filtered.map((r) => (
-                  <tr key={r.id} className="hover:bg-ink-100 transition-colors">
-                    <td className={`${td} font-semibold text-ink max-w-48`}>
+                  <tr key={r.id} className="hover:bg-ink-100 dark:hover:bg-[#1b2d20] transition-colors">
+                    <td className={`${td} font-semibold text-ink dark:text-[#dceee3] max-w-48`}>
                       <span className="line-clamp-2">{r.project_name ?? "—"}</span>
                     </td>
                     <td className={td}>{r.donor_name ?? "—"}</td>

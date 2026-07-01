@@ -169,8 +169,8 @@ export default function AdminSettingsPage() {
         <div className="flex items-center gap-4 mb-6">
           <Avatar name={displayName} size="xl" />
           <div>
-            <h3 className="font-sans font-bold text-lg text-ink">{displayName}</h3>
-            <p className="text-sm text-ink-500 font-sans">{profile.email}</p>
+            <h3 className="font-sans font-bold text-lg text-ink dark:text-[#dceee3]">{displayName}</h3>
+            <p className="text-sm text-ink-500 dark:text-[#668074] font-sans">{profile.email}</p>
             <span className="inline-flex mt-1 px-2 py-0.5 rounded-full bg-gold-light text-gold-dark text-xs font-semibold border border-gold/30">
               Administrator
             </span>
@@ -216,12 +216,12 @@ export default function AdminSettingsPage() {
       {/* Password change */}
       <Card padding="lg">
         <div className="flex items-center gap-3 mb-5">
-          <div className="h-9 w-9 rounded-full bg-brand-light flex items-center justify-center text-brand">
+          <div className="h-9 w-9 rounded-full bg-brand-light dark:bg-[#112618] flex items-center justify-center text-brand dark:text-[#2E9B5A]">
             <Lock size={16} />
           </div>
           <div>
-            <h3 className="font-sans font-bold text-base text-ink">Change Password</h3>
-            <p className="text-xs text-ink-500 font-sans">Use a strong password at least 8 characters long.</p>
+            <h3 className="font-sans font-bold text-base text-ink dark:text-[#dceee3]">Change Password</h3>
+            <p className="text-xs text-ink-500 dark:text-[#668074] font-sans">Use a strong password at least 8 characters long.</p>
           </div>
         </div>
 
@@ -252,12 +252,12 @@ export default function AdminSettingsPage() {
       {/* Create Admin */}
       <Card padding="lg">
         <div className="flex items-center gap-3 mb-5">
-          <div className="h-9 w-9 rounded-full bg-gold-light flex items-center justify-center text-gold-dark">
+          <div className="h-9 w-9 rounded-full bg-gold-light dark:bg-[#2a1e00] flex items-center justify-center text-gold-dark dark:text-[#F5C518]">
             <ShieldCheck size={16} />
           </div>
           <div>
-            <h3 className="font-sans font-bold text-base text-ink">Create Admin</h3>
-            <p className="text-xs text-ink-500 font-sans">Add a new administrator account to the panel.</p>
+            <h3 className="font-sans font-bold text-base text-ink dark:text-[#dceee3]">Create Admin</h3>
+            <p className="text-xs text-ink-500 dark:text-[#668074] font-sans">Add a new administrator account to the panel.</p>
           </div>
         </div>
 
@@ -287,13 +287,13 @@ export default function AdminSettingsPage() {
 
       {/* Manage Admin Roles */}
       <Card padding="none" className="overflow-hidden">
-        <div className="px-5 py-4 border-b border-ink-200 flex items-center gap-3">
-          <div className="h-8 w-8 rounded-full bg-ink-100 flex items-center justify-center text-ink-500">
+        <div className="px-5 py-4 border-b border-ink-200 dark:border-[#263a2b] flex items-center gap-3">
+          <div className="h-8 w-8 rounded-full bg-ink-100 dark:bg-[#1b2d20] flex items-center justify-center text-ink-500 dark:text-[#668074]">
             <ShieldCheck size={15} />
           </div>
           <div>
-            <h3 className="font-sans font-bold text-base text-ink">Admin Roles</h3>
-            <p className="text-xs text-ink-500 font-sans">Manage administrator accounts and access.</p>
+            <h3 className="font-sans font-bold text-base text-ink dark:text-[#dceee3]">Admin Roles</h3>
+            <p className="text-xs text-ink-500 dark:text-[#668074] font-sans">Manage administrator accounts and access.</p>
           </div>
         </div>
 
@@ -302,13 +302,13 @@ export default function AdminSettingsPage() {
         ) : admins.length === 0 ? (
           <p className="px-5 py-8 text-sm text-ink-400 font-sans text-center">No admin accounts found.</p>
         ) : (
-          <div className="divide-y divide-ink-200">
+          <div className="divide-y divide-ink-200 dark:divide-[#263a2b]">
             {admins.map((admin) => (
               <div key={admin.id} className="px-5 py-3 flex items-center gap-3">
                 <Avatar name={adminDisplayName(admin)} size="sm" />
                 <div className="flex-1 min-w-0">
-                  <div className="font-semibold text-sm text-ink font-sans truncate">{adminDisplayName(admin)}</div>
-                  <div className="text-xs text-ink-500 font-sans truncate">{admin.email ?? "—"}</div>
+                  <div className="font-semibold text-sm text-ink dark:text-[#dceee3] font-sans truncate">{adminDisplayName(admin)}</div>
+                  <div className="text-xs text-ink-500 dark:text-[#668074] font-sans truncate">{admin.email ?? "—"}</div>
                 </div>
                 <StatusBadge status={admin.status ?? "active"} />
                 <div className="flex items-center gap-1 shrink-0">

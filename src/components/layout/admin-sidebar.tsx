@@ -16,9 +16,9 @@ import {
   LogOut,
   Bell,
   ShieldCheck,
-  BookOpen,
   FolderOpen,
   Mail,
+  Newspaper,
 } from "lucide-react";
 import { Logo } from "./logo";
 import { Avatar } from "@/components/ui/avatar";
@@ -37,8 +37,8 @@ const NAV_ITEMS = [
   { key: "donations", label: "Donations", href: "/donations", icon: <HeartHandshake size={18} /> },
   { key: "categories", label: "Categories", href: "/categories", icon: <Tag size={18} /> },
   { key: "analytics", label: "Analytics", href: "/analytics", icon: <BarChart2 size={18} /> },
-  { key: "resources", label: "Resources", href: "/resources", icon: <BookOpen size={18} /> },
   { key: "subscribers", label: "Subscribers", href: "/subscribers", icon: <Mail size={18} /> },
+  { key: "newsletter", label: "Newsletter", href: "/newsletter", icon: <Newspaper size={18} /> },
 ];
 
 const PAGE_META: Record<string, { title: string; subtitle: string }> = {
@@ -54,8 +54,8 @@ const PAGE_META: Record<string, { title: string; subtitle: string }> = {
   "/analytics": { title: "Analytics", subtitle: "Platform-wide performance metrics" },
   "/settings": { title: "Settings", subtitle: "Admin account settings" },
   "/projects": { title: "Projects", subtitle: "Create and manage donation projects" },
-  "/resources": { title: "Resources", subtitle: "Manage community resources on the website" },
   "/subscribers": { title: "Subscribers", subtitle: "Manage newsletter subscribers" },
+  "/newsletter": { title: "Newsletter", subtitle: "Compose and send newsletters to all active subscribers" },
 };
 
 interface AdminLayoutProps {

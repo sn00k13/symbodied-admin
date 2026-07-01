@@ -32,8 +32,8 @@ const ROLE_TONE: Record<string, "brand" | "gold" | "neutral"> = {
   admin: "gold",
 };
 
-const th = "text-left px-5 py-3 text-xs font-semibold uppercase tracking-wide text-ink-500 border-b border-ink-200 bg-ink-100 font-sans";
-const td = "px-5 py-4 text-sm text-ink-600 border-b border-ink-200 font-sans";
+const th = "text-left px-5 py-3 text-xs font-semibold uppercase tracking-wide text-ink-500 dark:text-[#668074] border-b border-ink-200 dark:border-[#263a2b] bg-ink-100 dark:bg-[#1b2d20] font-sans";
+const td = "px-5 py-4 text-sm text-ink-600 dark:text-[#89a895] border-b border-ink-200 dark:border-[#263a2b] font-sans";
 
 function displayName(u: UserRow) {
   const name = `${u.first_name ?? ""} ${u.last_name ?? ""}`.trim();
@@ -138,16 +138,16 @@ export default function AdminUsersPage() {
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         {stats.map((s) => (
           <Card key={s.label} padding="md" className="text-center">
-            <div className="font-display font-bold text-3xl text-ink leading-none">
+            <div className="font-display font-bold text-3xl text-ink dark:text-[#dceee3] leading-none">
               {loading ? "—" : s.value}
             </div>
-            <div className="mt-1 text-xs text-ink-500 font-sans">{s.label}</div>
+            <div className="mt-1 text-xs text-ink-500 dark:text-[#668074] font-sans">{s.label}</div>
           </Card>
         ))}
       </div>
 
       <Card padding="none" className="overflow-hidden">
-        <div className="px-5 py-4 border-b border-ink-200 flex items-center gap-4 flex-wrap">
+        <div className="px-5 py-4 border-b border-ink-200 dark:border-[#263a2b] flex items-center gap-4 flex-wrap">
           <div className="max-w-xs flex-1">
             <Input
               placeholder="Search users..."
@@ -156,13 +156,13 @@ export default function AdminUsersPage() {
               leadingIcon={<Search size={15} />}
             />
           </div>
-          <div className="flex items-center gap-1 bg-ink-100 rounded-lg p-1">
+          <div className="flex items-center gap-1 bg-ink-100 dark:bg-[#1b2d20] rounded-lg p-1">
             {(["all", "user", "vendor"] as RoleFilter[]).map((r) => (
               <button
                 key={r}
                 onClick={() => setRoleFilter(r)}
                 className={`px-3 py-1.5 text-xs font-semibold rounded-md font-sans transition-colors capitalize ${
-                  roleFilter === r ? "bg-white text-ink shadow-[var(--shadow-xs)]" : "text-ink-500 hover:text-ink"
+                  roleFilter === r ? "bg-white dark:bg-[#162018] text-ink dark:text-[#dceee3] shadow-[var(--shadow-xs)]" : "text-ink-500 dark:text-[#668074] hover:text-ink dark:hover:text-[#dceee3]"
                 }`}
               >
                 {r}
@@ -190,7 +190,7 @@ export default function AdminUsersPage() {
               </thead>
               <tbody>
                 {filtered.map((u) => (
-                  <tr key={u.id} className="hover:bg-ink-100 transition-colors">
+                  <tr key={u.id} className="hover:bg-ink-100 dark:hover:bg-[#1b2d20] transition-colors">
                     <td className={td}>
                       <div className="flex items-center gap-3">
                         <Avatar name={displayName(u)} size="sm" />
@@ -205,7 +205,7 @@ export default function AdminUsersPage() {
                       <select
                         value={u.role}
                         onChange={(e) => handleRoleChange(u, e.target.value as "user" | "vendor")}
-                        className="text-xs font-semibold border border-ink-200 rounded-md px-2 py-1 bg-white font-sans text-ink focus:outline-none focus:border-brand"
+                        className="text-xs font-semibold border border-ink-200 dark:border-[#263a2b] rounded-md px-2 py-1 bg-white dark:bg-[#1b2d20] font-sans text-ink dark:text-[#dceee3] focus:outline-none focus:border-brand"
                       >
                         <option value="user">Member</option>
                         <option value="vendor">Vendor</option>
@@ -239,11 +239,11 @@ export default function AdminUsersPage() {
 
     {showModal && (
 
-      <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50 p-4">
-        <div className="bg-white rounded-xl shadow-xl w-full max-w-md">
-          <div className="p-5 border-b border-ink-200 flex items-center justify-between">
-            <h3 className="font-display font-bold text-lg text-ink">Create User</h3>
-            <button onClick={() => setShowModal(false)} className="text-ink-400 hover:text-ink transition-colors">
+      <div className="fixed inset-0 bg-black/50 dark:bg-black/70 flex items-center justify-center z-50 p-4">
+        <div className="bg-white dark:bg-[#162018] rounded-xl shadow-xl w-full max-w-md border border-transparent dark:border-[#263a2b]">
+          <div className="p-5 border-b border-ink-200 dark:border-[#263a2b] flex items-center justify-between">
+            <h3 className="font-display font-bold text-lg text-ink dark:text-[#dceee3]">Create User</h3>
+            <button onClick={() => setShowModal(false)} className="text-ink-400 dark:text-[#4d6356] hover:text-ink dark:hover:text-[#dceee3] transition-colors">
               <X size={20} />
             </button>
           </div>
@@ -266,11 +266,11 @@ export default function AdminUsersPage() {
               placeholder="Min. 8 characters"
             />
             <div className="flex flex-col gap-1.5">
-              <label className="text-sm font-semibold text-ink font-sans">Role</label>
+              <label className="text-sm font-semibold text-ink dark:text-[#dceee3] font-sans">Role</label>
               <select
                 value={createForm.role}
                 onChange={(e) => setCreateForm((p) => ({ ...p, role: e.target.value as "user" | "vendor" }))}
-                className="w-full h-11 rounded-lg border border-ink-200 px-4 font-sans text-sm text-ink bg-white focus:outline-none focus:border-brand focus:ring-2 focus:ring-brand/20"
+                className="w-full h-11 rounded-lg border border-ink-200 dark:border-[#263a2b] px-4 font-sans text-sm text-ink dark:text-[#dceee3] bg-white dark:bg-[#1b2d20] focus:outline-none focus:border-brand focus:ring-2 focus:ring-brand/20"
               >
                 <option value="user">Member</option>
                 <option value="vendor">Vendor</option>

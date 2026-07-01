@@ -25,8 +25,8 @@ type ProductRow = {
   image_urls: string[] | null;
 };
 
-const th = "text-left px-5 py-3 text-xs font-semibold uppercase tracking-wide text-ink-500 border-b border-ink-200 bg-ink-100 font-sans";
-const td = "px-5 py-4 text-sm text-ink-600 border-b border-ink-200 font-sans";
+const th = "text-left px-5 py-3 text-xs font-semibold uppercase tracking-wide text-ink-500 dark:text-[#668074] border-b border-ink-200 dark:border-[#263a2b] bg-ink-100 dark:bg-[#1b2d20] font-sans";
+const td = "px-5 py-4 text-sm text-ink-600 dark:text-[#89a895] border-b border-ink-200 dark:border-[#263a2b] font-sans";
 
 const CATEGORIES = ["Agriculture", "Medicine", "Technology", "Textile", "Other"];
 
@@ -92,16 +92,16 @@ export default function AdminProductsPage() {
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         {stats.map((s) => (
           <Card key={s.label} padding="md" className="text-center">
-            <div className="font-display font-bold text-3xl text-ink leading-none">
+            <div className="font-display font-bold text-3xl text-ink dark:text-[#dceee3] leading-none">
               {loading ? "—" : s.value}
             </div>
-            <div className="mt-1 text-xs text-ink-500 font-sans">{s.label}</div>
+            <div className="mt-1 text-xs text-ink-500 dark:text-[#668074] font-sans">{s.label}</div>
           </Card>
         ))}
       </div>
 
       <Card padding="none" className="overflow-hidden">
-        <div className="px-5 py-4 border-b border-ink-200 flex items-center gap-4 flex-wrap">
+        <div className="px-5 py-4 border-b border-ink-200 dark:border-[#263a2b] flex items-center gap-4 flex-wrap">
           <div className="max-w-xs flex-1">
             <Input
               placeholder="Search products..."
@@ -110,13 +110,13 @@ export default function AdminProductsPage() {
               leadingIcon={<Search size={15} />}
             />
           </div>
-          <div className="flex items-center gap-1 bg-ink-100 rounded-lg p-1 flex-wrap">
+          <div className="flex items-center gap-1 bg-ink-100 dark:bg-[#1b2d20] rounded-lg p-1 flex-wrap">
             {(["all", ...CATEGORIES]).map((c) => (
               <button
                 key={c}
                 onClick={() => setCatFilter(c)}
                 className={`px-3 py-1.5 text-xs font-semibold rounded-md font-sans transition-colors capitalize ${
-                  catFilter === c ? "bg-white text-ink shadow-[var(--shadow-xs)]" : "text-ink-500 hover:text-ink"
+                  catFilter === c ? "bg-white dark:bg-[#162018] text-ink dark:text-[#dceee3] shadow-[var(--shadow-xs)]" : "text-ink-500 dark:text-[#668074] hover:text-ink dark:hover:text-[#dceee3]"
                 }`}
               >
                 {c}
@@ -148,7 +148,7 @@ export default function AdminProductsPage() {
               </thead>
               <tbody>
                 {filtered.map((p) => (
-                  <tr key={p.id} className="hover:bg-ink-100 transition-colors">
+                  <tr key={p.id} className="hover:bg-ink-100 dark:hover:bg-[#1b2d20] transition-colors">
                     <td className={td}>
                       <div className="flex items-center gap-3">
                         {p.image_urls && p.image_urls[0] ? (

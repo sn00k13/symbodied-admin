@@ -21,8 +21,8 @@ type OrderRow = {
 
 type StatusFilter = "all" | "processing" | "shipped" | "delivered" | "cancelled";
 
-const th = "text-left px-5 py-3 text-xs font-semibold uppercase tracking-wide text-ink-500 border-b border-ink-200 bg-ink-100 font-sans";
-const td = "px-5 py-4 text-sm text-ink-600 border-b border-ink-200 font-sans";
+const th = "text-left px-5 py-3 text-xs font-semibold uppercase tracking-wide text-ink-500 dark:text-[#668074] border-b border-ink-200 dark:border-[#263a2b] bg-ink-100 dark:bg-[#1b2d20] font-sans";
+const td = "px-5 py-4 text-sm text-ink-600 dark:text-[#89a895] border-b border-ink-200 dark:border-[#263a2b] font-sans";
 
 export default function AdminOrdersPage() {
   const [orders, setOrders] = useState<OrderRow[]>([]);
@@ -69,10 +69,10 @@ export default function AdminOrdersPage() {
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         {stats.map((s) => (
           <Card key={s.label} padding="md" className="text-center">
-            <div className="font-display font-bold text-3xl text-ink leading-none">
+            <div className="font-display font-bold text-3xl text-ink dark:text-[#dceee3] leading-none">
               {loading ? "—" : s.value}
             </div>
-            <div className="mt-1 text-xs text-ink-500 font-sans">{s.label}</div>
+            <div className="mt-1 text-xs text-ink-500 dark:text-[#668074] font-sans">{s.label}</div>
           </Card>
         ))}
       </div>
@@ -85,7 +85,7 @@ export default function AdminOrdersPage() {
       )}
 
       <Card padding="none" className="overflow-hidden">
-        <div className="px-5 py-4 border-b border-ink-200 flex items-center gap-4 flex-wrap">
+        <div className="px-5 py-4 border-b border-ink-200 dark:border-[#263a2b] flex items-center gap-4 flex-wrap">
           <div className="max-w-xs flex-1">
             <Input
               placeholder="Search by order ID, customer or vendor..."
@@ -94,13 +94,13 @@ export default function AdminOrdersPage() {
               leadingIcon={<Search size={15} />}
             />
           </div>
-          <div className="flex items-center gap-1 text-sm font-sans text-ink-600">
+          <div className="flex items-center gap-1 text-sm font-sans text-ink-600 dark:text-[#89a895]">
             Filter:
             <div className="relative ml-1">
               <select
                 value={statusFilter}
                 onChange={(e) => setStatusFilter(e.target.value as StatusFilter)}
-                className="appearance-none pl-3 pr-7 py-1.5 text-sm font-semibold border border-ink-200 rounded-lg bg-white text-ink font-sans focus:outline-none focus:border-brand"
+                className="appearance-none pl-3 pr-7 py-1.5 text-sm font-semibold border border-ink-200 dark:border-[#263a2b] rounded-lg bg-white dark:bg-[#1b2d20] text-ink dark:text-[#dceee3] font-sans focus:outline-none focus:border-brand"
               >
                 {STATUSES.map((s) => (
                   <option key={s} value={s} className="capitalize">{s.charAt(0).toUpperCase() + s.slice(1)}</option>
@@ -132,11 +132,11 @@ export default function AdminOrdersPage() {
               </thead>
               <tbody>
                 {filtered.map((o) => (
-                  <tr key={o.id} className="hover:bg-ink-100 transition-colors">
+                  <tr key={o.id} className="hover:bg-ink-100 dark:hover:bg-[#1b2d20] transition-colors">
                     <td className={td}>
-                      <span className="font-mono text-xs font-semibold text-ink">{o.id.slice(0, 8)}…</span>
+                      <span className="font-mono text-xs font-semibold text-ink dark:text-[#dceee3]">{o.id.slice(0, 8)}…</span>
                     </td>
-                    <td className={`${td} font-semibold text-ink`}>{o.customer ?? "—"}</td>
+                    <td className={`${td} font-semibold text-ink dark:text-[#dceee3]`}>{o.customer ?? "—"}</td>
                     <td className={td}>{o.vendor ?? "—"}</td>
                     <td className={td}>
                       <span className="line-clamp-1 max-w-36">{o.product ?? "—"}</span>

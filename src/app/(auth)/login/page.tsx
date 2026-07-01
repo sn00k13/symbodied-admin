@@ -48,16 +48,16 @@ export default function AdminLoginPage() {
   return (
     <div className="flex flex-col gap-6">
       <div>
-        <h1 className="font-display font-bold text-2xl text-ink tracking-tight">Sign in</h1>
-        <p className="mt-1.5 text-sm text-ink-600 font-sans">
+        <h1 className="font-display font-bold text-2xl text-ink dark:text-[#dceee3] tracking-tight">Sign in</h1>
+        <p className="mt-1.5 text-sm text-ink-600 dark:text-[#89a895] font-sans">
           Enter your admin credentials to access the dashboard.
         </p>
       </div>
 
       {error && (
-        <div className="flex items-start gap-3 p-4 rounded-lg bg-error-bg border border-error/20">
-          <ShieldAlert size={16} className="text-error mt-0.5 shrink-0" />
-          <p className="text-sm text-error font-sans">{error}</p>
+        <div className="flex items-start gap-3 p-4 rounded-lg bg-error-bg dark:bg-[#2c1414] border border-error/20">
+          <ShieldAlert size={16} className="text-error dark:text-[#f87171] mt-0.5 shrink-0" />
+          <p className="text-sm text-error dark:text-[#f87171] font-sans">{error}</p>
         </div>
       )}
 

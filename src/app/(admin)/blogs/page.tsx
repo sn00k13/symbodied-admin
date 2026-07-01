@@ -40,10 +40,10 @@ const STATUS_FILTERS: StatusFilter[] = ["all", "pending", "approved", "published
 
 const emptyForm: BlogForm = { title: "", category: "Agriculture", excerpt: "", content: "", image_url: "", status: "published" };
 
-const th = "text-left px-5 py-3 text-xs font-semibold uppercase tracking-wide text-ink-500 border-b border-ink-200 bg-ink-100 font-sans";
-const td = "px-5 py-4 text-sm text-ink-600 border-b border-ink-200 font-sans";
-const ta = "w-full rounded-lg border border-ink-200 px-4 py-3 font-sans text-sm text-ink bg-white resize-none focus:outline-none focus:border-brand focus:ring-2 focus:ring-brand/20 placeholder:text-ink-400";
-const sel = "w-full h-11 rounded-lg border border-ink-200 px-4 font-sans text-sm text-ink bg-white focus:outline-none focus:border-brand focus:ring-2 focus:ring-brand/20";
+const th = "text-left px-5 py-3 text-xs font-semibold uppercase tracking-wide text-ink-500 dark:text-[#668074] border-b border-ink-200 dark:border-[#263a2b] bg-ink-100 dark:bg-[#1b2d20] font-sans";
+const td = "px-5 py-4 text-sm text-ink-600 dark:text-[#89a895] border-b border-ink-200 dark:border-[#263a2b] font-sans";
+const ta = "w-full rounded-lg border border-ink-200 dark:border-[#263a2b] px-4 py-3 font-sans text-sm text-ink dark:text-[#dceee3] bg-white dark:bg-[#1b2d20] resize-none focus:outline-none focus:border-brand focus:ring-2 focus:ring-brand/20 placeholder:text-ink-400 dark:placeholder:text-[#4d6356]";
+const sel = "w-full h-11 rounded-lg border border-ink-200 dark:border-[#263a2b] px-4 font-sans text-sm text-ink dark:text-[#dceee3] bg-white dark:bg-[#1b2d20] focus:outline-none focus:border-brand focus:ring-2 focus:ring-brand/20";
 
 export default function AdminBlogsPage() {
   const [rows, setRows] = useState<BlogRow[]>([]);
@@ -148,16 +148,16 @@ export default function AdminBlogsPage() {
           {STATUS_FILTERS.map((s) => (
             <Card key={s} padding="sm" className="text-center cursor-pointer" onClick={() => setStatusFilter(s)}
               style={{ outline: statusFilter === s ? "2px solid #1A6B3C" : undefined }}>
-              <div className="font-display font-bold text-2xl text-ink leading-none">
+              <div className="font-display font-bold text-2xl text-ink dark:text-[#dceee3] leading-none">
                 {loading ? "—" : (s === "all" ? rows.length : rows.filter((r) => r.status === s).length)}
               </div>
-              <div className="mt-0.5 text-xs text-ink-500 font-sans capitalize">{s}</div>
+              <div className="mt-0.5 text-xs text-ink-500 dark:text-[#668074] font-sans capitalize">{s}</div>
             </Card>
           ))}
         </div>
 
         <Card padding="none" className="overflow-hidden">
-          <div className="px-5 py-4 border-b border-ink-200 max-w-sm">
+          <div className="px-5 py-4 border-b border-ink-200 dark:border-[#263a2b] max-w-sm">
             <Input placeholder="Search blogs…" value={search} onChange={(e) => setSearch(e.target.value)} leadingIcon={<Search size={15} />} />
           </div>
 
@@ -180,8 +180,8 @@ export default function AdminBlogsPage() {
                 </thead>
                 <tbody>
                   {filtered.map((r) => (
-                    <tr key={r.id} className="hover:bg-ink-100 transition-colors">
-                      <td className={`${td} font-semibold text-ink max-w-64`}>
+                    <tr key={r.id} className="hover:bg-ink-100 dark:hover:bg-[#1b2d20] transition-colors">
+                      <td className={`${td} font-semibold text-ink dark:text-[#dceee3] max-w-64`}>
                         <span className="line-clamp-2">{r.title}</span>
                       </td>
                       <td className={td}>{r.author ?? "Admin"}</td>
@@ -202,7 +202,7 @@ export default function AdminBlogsPage() {
                             <Button variant="ghost" size="sm" className="text-brand" onClick={() => setStatus(r.id, "published")}>Publish</Button>
                           )}
                           <button onClick={() => openEdit(r)} title="Edit"
-                            className="inline-flex items-center justify-center h-8 w-8 rounded-lg text-ink-500 hover:bg-ink-100 hover:text-ink transition-colors">
+                            className="inline-flex items-center justify-center h-8 w-8 rounded-lg text-ink-500 dark:text-[#668074] hover:bg-ink-100 dark:hover:bg-[#1b2d20] hover:text-ink dark:hover:text-[#dceee3] transition-colors">
                             <Pencil size={14} />
                           </button>
                           <button onClick={() => handleDelete(r)} title="Delete"
@@ -221,23 +221,23 @@ export default function AdminBlogsPage() {
       </div>
 
       {showModal && (
-        <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-xl shadow-xl w-full max-w-2xl max-h-[92vh] overflow-y-auto">
-            <div className="sticky top-0 bg-white z-10 p-5 border-b border-ink-200 flex items-center justify-between">
-              <h3 className="font-display font-bold text-lg text-ink">{editingId ? "Edit Blog Post" : "Write Blog Post"}</h3>
-              <button onClick={() => setShowModal(false)} className="text-ink-400 hover:text-ink transition-colors"><X size={20} /></button>
+        <div className="fixed inset-0 bg-black/50 dark:bg-black/70 flex items-center justify-center z-50 p-4">
+          <div className="bg-white dark:bg-[#162018] rounded-xl shadow-xl w-full max-w-2xl max-h-[92vh] overflow-y-auto border border-transparent dark:border-[#263a2b]">
+            <div className="sticky top-0 bg-white dark:bg-[#162018] z-10 p-5 border-b border-ink-200 dark:border-[#263a2b] flex items-center justify-between">
+              <h3 className="font-display font-bold text-lg text-ink dark:text-[#dceee3]">{editingId ? "Edit Blog Post" : "Write Blog Post"}</h3>
+              <button onClick={() => setShowModal(false)} className="text-ink-400 dark:text-[#4d6356] hover:text-ink dark:hover:text-[#dceee3] transition-colors"><X size={20} /></button>
             </div>
             <form onSubmit={handleSubmit} className="p-5 flex flex-col gap-4">
               <Input label="Title" value={form.title} onChange={f("title")} required placeholder="Blog post title" />
               <div className="grid grid-cols-2 gap-4">
                 <div className="flex flex-col gap-1.5">
-                  <label className="text-sm font-semibold text-ink font-sans">Category</label>
+                  <label className="text-sm font-semibold text-ink dark:text-[#dceee3] font-sans">Category</label>
                   <select value={form.category} onChange={f("category")} className={sel}>
                     {CATEGORIES.map((c) => <option key={c} value={c}>{c}</option>)}
                   </select>
                 </div>
                 <div className="flex flex-col gap-1.5">
-                  <label className="text-sm font-semibold text-ink font-sans">Status</label>
+                  <label className="text-sm font-semibold text-ink dark:text-[#dceee3] font-sans">Status</label>
                   <select value={form.status} onChange={f("status")} className={sel}>
                     {STATUS_OPTIONS.map((s) => <option key={s} value={s} className="capitalize">{s.charAt(0).toUpperCase() + s.slice(1)}</option>)}
                   </select>
@@ -245,11 +245,11 @@ export default function AdminBlogsPage() {
               </div>
               <Input label="Cover Image URL" value={form.image_url} onChange={f("image_url")} placeholder="https://..." type="url" />
               <div className="flex flex-col gap-1.5">
-                <label className="text-sm font-semibold text-ink font-sans">Excerpt <span className="font-normal text-ink-400">(shown on listing)</span></label>
+                <label className="text-sm font-semibold text-ink dark:text-[#dceee3] font-sans">Excerpt <span className="font-normal text-ink-400 dark:text-[#4d6356]">(shown on listing)</span></label>
                 <textarea value={form.excerpt} onChange={f("excerpt")} placeholder="Brief summary shown on the blog listing page…" rows={2} className={ta} />
               </div>
               <div className="flex flex-col gap-1.5">
-                <label className="text-sm font-semibold text-ink font-sans">Content</label>
+                <label className="text-sm font-semibold text-ink dark:text-[#dceee3] font-sans">Content</label>
                 <textarea value={form.content} onChange={f("content")} placeholder="Full article content…" rows={10} className={ta} />
               </div>
               <div className="flex gap-3 justify-end pt-1">

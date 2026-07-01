@@ -20,8 +20,8 @@ type Subscriber = {
 
 type StatusFilter = "all" | "active" | "unsubscribed";
 
-const th = "text-left px-5 py-3 text-xs font-semibold uppercase tracking-wide text-ink-500 border-b border-ink-200 bg-ink-100 font-sans";
-const td = "px-5 py-4 text-sm text-ink-600 border-b border-ink-200 font-sans";
+const th = "text-left px-5 py-3 text-xs font-semibold uppercase tracking-wide text-ink-500 dark:text-[#668074] border-b border-ink-200 dark:border-[#263a2b] bg-ink-100 dark:bg-[#1b2d20] font-sans";
+const td = "px-5 py-4 text-sm text-ink-600 dark:text-[#89a895] border-b border-ink-200 dark:border-[#263a2b] font-sans";
 
 function loadSubscribers(
   setRows: (r: Subscriber[]) => void,
@@ -130,16 +130,16 @@ export default function SubscribersPage() {
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         {stats.map((s) => (
           <Card key={s.label} padding="md" className="text-center">
-            <div className="font-display font-bold text-3xl text-ink leading-none">
+            <div className="font-display font-bold text-3xl text-ink dark:text-[#dceee3] leading-none">
               {loading ? "—" : s.value}
             </div>
-            <div className="mt-1 text-xs text-ink-500 font-sans">{s.label}</div>
+            <div className="mt-1 text-xs text-ink-500 dark:text-[#668074] font-sans">{s.label}</div>
           </Card>
         ))}
       </div>
 
       <Card padding="none" className="overflow-hidden">
-        <div className="px-5 py-4 border-b border-ink-200 flex items-center gap-4 flex-wrap">
+        <div className="px-5 py-4 border-b border-ink-200 dark:border-[#263a2b] flex items-center gap-4 flex-wrap">
           <div className="max-w-xs flex-1">
             <Input
               placeholder="Search by email..."
@@ -148,15 +148,15 @@ export default function SubscribersPage() {
               leadingIcon={<Search size={15} />}
             />
           </div>
-          <div className="flex items-center gap-1 bg-ink-100 rounded-lg p-1">
+          <div className="flex items-center gap-1 bg-ink-100 dark:bg-[#1b2d20] rounded-lg p-1">
             {(["all", "active", "unsubscribed"] as StatusFilter[]).map((s) => (
               <button
                 key={s}
                 onClick={() => setFilter(s)}
                 className={`px-3 py-1.5 text-xs font-semibold rounded-md font-sans transition-colors capitalize ${
                   filter === s
-                    ? "bg-white text-ink shadow-[var(--shadow-xs)]"
-                    : "text-ink-500 hover:text-ink"
+                    ? "bg-white dark:bg-[#162018] text-ink dark:text-[#dceee3] shadow-[var(--shadow-xs)]"
+                    : "text-ink-500 dark:text-[#668074] hover:text-ink dark:hover:text-[#dceee3]"
                 }`}
               >
                 {s}
@@ -183,9 +183,9 @@ export default function SubscribersPage() {
               </thead>
               <tbody>
                 {filtered.map((sub) => (
-                  <tr key={sub.id} className="hover:bg-ink-100 transition-colors">
+                  <tr key={sub.id} className="hover:bg-ink-100 dark:hover:bg-[#1b2d20] transition-colors">
                     <td className={td}>
-                      <span className="font-medium text-ink">{sub.email}</span>
+                      <span className="font-medium text-ink dark:text-[#dceee3]">{sub.email}</span>
                     </td>
                     <td className={td}>{formatDate(sub.subscribed_at)}</td>
                     <td className={td}>{sub.unsubscribed_at ? formatDate(sub.unsubscribed_at) : "—"}</td>

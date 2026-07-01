@@ -147,9 +147,9 @@ export default async function AdminDashboardPage() {
       {/* Charts row */}
       <div className="grid lg:grid-cols-[1.6fr_1fr] gap-5">
         <Card padding="none" className="overflow-hidden">
-          <div className="px-5 py-4 border-b border-ink-200 flex items-center justify-between">
-            <h3 className="font-sans font-bold text-base text-ink">Orders This Week</h3>
-            <span className="text-xs text-ink-500 font-sans">
+          <div className="px-5 py-4 border-b border-ink-200 dark:border-[#263a2b] flex items-center justify-between">
+            <h3 className="font-sans font-bold text-base text-ink dark:text-[#dceee3]">Orders This Week</h3>
+            <span className="text-xs text-ink-500 dark:text-[#668074] font-sans">
               {last7[0].toLocaleDateString("en-GB", { day: "numeric", month: "short" })} –{" "}
               {last7[6].toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" })}
             </span>
@@ -157,7 +157,7 @@ export default async function AdminDashboardPage() {
           <div className="p-6 flex items-end gap-3 h-52">
             {weeklyData.map((w) => (
               <div key={w.label} className="flex-1 flex flex-col items-center gap-2 h-full justify-end">
-                {w.count > 0 && <span className="text-xs text-ink-500 font-sans">{w.count}</span>}
+                {w.count > 0 && <span className="text-xs text-ink-500 dark:text-[#668074] font-sans">{w.count}</span>}
                 <div
                   className="w-full max-w-9 rounded-t-md transition-all"
                   style={{
@@ -165,32 +165,32 @@ export default async function AdminDashboardPage() {
                     minHeight: w.count > 0 ? "6px" : "3px",
                     background: w.count > 0
                       ? "linear-gradient(180deg, #2E9B5A 0%, #1A6B3C 100%)"
-                      : "#E5E9E7",
+                      : "var(--border-subtle)",
                   }}
                 />
-                <span className="text-xs text-ink-400 font-sans">{w.label}</span>
+                <span className="text-xs text-ink-400 dark:text-[#4d6356] font-sans">{w.label}</span>
               </div>
             ))}
           </div>
         </Card>
 
         <Card padding="none" className="overflow-hidden">
-          <div className="px-5 py-4 border-b border-ink-200">
-            <h3 className="font-sans font-bold text-base text-ink">Products by Program</h3>
+          <div className="px-5 py-4 border-b border-ink-200 dark:border-[#263a2b]">
+            <h3 className="font-sans font-bold text-base text-ink dark:text-[#dceee3]">Products by Program</h3>
           </div>
           <div className="p-6 flex flex-col gap-5">
             {cats.length > 0 ? cats.map((c) => (
               <div key={c.n}>
                 <div className="flex justify-between text-sm mb-1.5 font-sans">
-                  <span className="text-ink-600">{c.n}</span>
-                  <strong className="text-ink">{c.v}%</strong>
+                  <span className="text-ink-600 dark:text-[#89a895]">{c.n}</span>
+                  <strong className="text-ink dark:text-[#dceee3]">{c.v}%</strong>
                 </div>
-                <div className="h-2 bg-ink-200 rounded-full overflow-hidden">
+                <div className="h-2 bg-ink-200 dark:bg-[#263a2b] rounded-full overflow-hidden">
                   <div className="h-full rounded-full" style={{ width: `${c.v}%`, background: c.color }} />
                 </div>
               </div>
             )) : (
-              <p className="text-sm text-ink-400 font-sans">No product data yet.</p>
+              <p className="text-sm text-ink-400 dark:text-[#4d6356] font-sans">No product data yet.</p>
             )}
           </div>
         </Card>
@@ -200,20 +200,20 @@ export default async function AdminDashboardPage() {
       <div className="grid lg:grid-cols-2 gap-5">
         {/* Recent blogs needing approval */}
         <Card padding="none" className="overflow-hidden">
-          <div className="flex items-center justify-between px-5 py-4 border-b border-ink-200">
-            <h3 className="font-sans font-bold text-base text-ink">Recent Blog Submissions</h3>
+          <div className="flex items-center justify-between px-5 py-4 border-b border-ink-200 dark:border-[#263a2b]">
+            <h3 className="font-sans font-bold text-base text-ink dark:text-[#dceee3]">Recent Blog Submissions</h3>
             {(pendingBlogCount ?? 0) > 0 && (
               <Badge tone="warning" size="sm">{pendingBlogCount} pending</Badge>
             )}
           </div>
-          <div className="divide-y divide-ink-200">
+          <div className="divide-y divide-ink-200 dark:divide-[#263a2b]">
             {blogs.length === 0 ? (
-              <p className="px-5 py-6 text-sm text-ink-400 font-sans text-center">No blog submissions.</p>
+              <p className="px-5 py-6 text-sm text-ink-400 dark:text-[#4d6356] font-sans text-center">No blog submissions.</p>
             ) : blogs.map((b) => (
               <div key={b.id} className="flex items-start justify-between px-5 py-3.5 gap-4">
                 <div className="min-w-0">
-                  <p className="text-sm font-semibold text-ink font-sans truncate">{b.title}</p>
-                  <p className="text-xs text-ink-500 font-sans mt-0.5">{b.author} · {formatDate(b.created_at, { day: "numeric", month: "short" })}</p>
+                  <p className="text-sm font-semibold text-ink dark:text-[#dceee3] font-sans truncate">{b.title}</p>
+                  <p className="text-xs text-ink-500 dark:text-[#668074] font-sans mt-0.5">{b.author} · {formatDate(b.created_at, { day: "numeric", month: "short" })}</p>
                 </div>
                 <StatusBadge status={b.status} />
               </div>
@@ -223,19 +223,19 @@ export default async function AdminDashboardPage() {
 
         {/* Recent orders */}
         <Card padding="none" className="overflow-hidden">
-          <div className="flex items-center justify-between px-5 py-4 border-b border-ink-200">
-            <h3 className="font-sans font-bold text-base text-ink">Recent Orders</h3>
+          <div className="flex items-center justify-between px-5 py-4 border-b border-ink-200 dark:border-[#263a2b]">
+            <h3 className="font-sans font-bold text-base text-ink dark:text-[#dceee3]">Recent Orders</h3>
           </div>
-          <div className="divide-y divide-ink-200">
+          <div className="divide-y divide-ink-200 dark:divide-[#263a2b]">
             {(recentOrders ?? []).length === 0 ? (
-              <p className="px-5 py-6 text-sm text-ink-400 font-sans text-center">No orders yet.</p>
+              <p className="px-5 py-6 text-sm text-ink-400 dark:text-[#4d6356] font-sans text-center">No orders yet.</p>
             ) : (recentOrders ?? []).map((o) => {
               const order = o as { id: string; customer: string | null; total: number | null; status: string; created_at: string | null };
               return (
                 <div key={order.id} className="flex items-center justify-between px-5 py-3.5 gap-4">
                   <div className="min-w-0">
-                    <p className="text-sm font-semibold text-ink font-sans">{order.customer ?? "—"}</p>
-                    <p className="text-xs font-mono text-ink-500 mt-0.5">{order.id.slice(0, 8)}…</p>
+                    <p className="text-sm font-semibold text-ink dark:text-[#dceee3] font-sans">{order.customer ?? "—"}</p>
+                    <p className="text-xs font-mono text-ink-500 dark:text-[#668074] mt-0.5">{order.id.slice(0, 8)}…</p>
                   </div>
                   <div className="flex items-center gap-3 shrink-0">
                     <span className="text-sm font-semibold text-brand font-sans">
