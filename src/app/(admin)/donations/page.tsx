@@ -24,6 +24,20 @@ type DonationRow = {
   profiles: { first_name: string | null; last_name: string | null } | null;
 };
 
+type RawDonation = {
+  id: string;
+  project_id: string | null;
+  donor_name: string | null;
+  amount: number | null;
+  currency: string | null;
+  payment_method: string | null;
+  reference: string | null;
+  status: string;
+  created_at: string | null;
+  projects?: { name: string } | { name: string }[] | null;
+  profiles?: { first_name: string | null; last_name: string | null } | { first_name: string | null; last_name: string | null }[] | null;
+};
+
 type ProjectOption = { id: string; name: string };
 
 const CURRENCIES = ["NGN", "USD", "EUR", "GBP", "CAD", "GHS", "KES"];
@@ -56,7 +70,13 @@ export default function AdminDonationsPage() {
       .select("id, project_id, donor_name, amount, currency, payment_method, reference, status, created_at, projects(name), profiles(first_name, last_name)")
       .order("created_at", { ascending: false })
       .then(({ data }) => {
-        setRows((data as DonationRow[]) ?? []);
+        setRows(
+          ((data ?? []) as unknown as RawDonation[]).map((raw) => {
+            const projects = Array.isArray(raw.projects) ? raw.projects[0] : raw.projects;
+            const profiles = Array.isArray(raw.profiles) ? raw.profiles[0] : raw.profiles;
+            return { ...raw, projects: projects ?? null, profiles: profiles ?? null };
+          })
+        );
         setLoading(false);
       });
     supabase
